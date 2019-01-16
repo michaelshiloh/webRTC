@@ -1,0 +1,15 @@
+<html>
+<head>
+  <script src="js/webrtc.js"></script>
+</head>
+
+<body>
+  <video id="the-video" width="640" height="480" muted autoPlay playsInline />
+  <script type="text/javascript">
+    let dataController = new DataController();
+    let transmitterController = new WebrtcTransmitterController(dataController);
+    
+    transmitterController.start(document.getElementById('the-video'));
+  </script>
+</body>
+</html>
