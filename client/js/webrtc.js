@@ -71,7 +71,7 @@ const peerConnectionConfig = {
   ]
 };
 
-const constraints = { video: true, audio: false };
+const constraints = { video: true, audio: true };
 
 class WebrtcTransmitterController extends Listenable {  
   constructor(data) {
