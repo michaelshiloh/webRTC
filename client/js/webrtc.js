@@ -71,7 +71,22 @@ const peerConnectionConfig = {
   ]
 };
 
-const constraints = { video: true, audio: true };
+// const constraints = { audio: { channelCount: 0 } , video: true };
+const constraints = { video: true, audio: false }
+// const constraints = window.constraints = { audio: true , video: true };
+/*
+const 
+constraints 
+= {
+	audio: {
+		echoCancellation: {exact: hasEchoCancellation)
+	},
+	video: {
+		true //width: 1280, height: 720
+	}
+}
+*/
+
 
 class WebrtcTransmitterController extends Listenable {  
   constructor(data) {
