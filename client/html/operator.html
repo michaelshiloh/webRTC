@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html>
 <head>
   <script src="js/webrtc.js"></script>
@@ -9,14 +10,10 @@ table ,td, tr {
 }
 </style>
 
+
 <body>
-  <video id="the-video" width="640" height="480" muted autoPlay playsInline />
-  <script type="text/javascript">
-    let dataController = new DataController();
-    let receiverController = new WebrtcReceiverController(dataController);
-    
-    receiverController.start(document.getElementById('the-video'));
-  </script>
+  <video id="the-video" width="640" height="480" muted autoPlay playsInline >
+	</video>
 
 
 		<table style="width:100%; max-width: 500px; height:300px;">
@@ -66,8 +63,15 @@ table ,td, tr {
 			</tr>
 		</table>
 
+
 	</body>
 
+  <script type="text/javascript">
+    let dataController = new DataController();
+    let receiverController = new WebrtcReceiverController(dataController);
+    
+    receiverController.start(document.getElementById('the-video'));
+  </script>
 
 
 </html>
