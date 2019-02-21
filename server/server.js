@@ -2,9 +2,40 @@ const fs = require('fs');
 const mime = require('mime');
 const url = require('url');
 const util = require('util');
-const WebSocketServer = require('websocket').server;
+const WebSocketServer = require('websocket').server; // for video
 
-const PORT=8080;
+
+// const server = http.Server(app);  // connects http library to server
+
+// something here added serial
+
+
+const IP_PORT=8080;
+
+const SerialPort = require('serialport')
+const Readline = require('@serialport/parser-readline')
+
+// check to make sure that the user calls the serial port for the arduino when
+// running the server
+if(!process.argv[2]) {
+    console.error('Usage: node '+process.argv[1]+' SERIAL_PORT');
+    process.exit(1);
+}
+
+// Initialize serial port and create a parser
+// initialize the serial port based on the user input
+const serialPort = new SerialPort(process.argv[2], { baudRate: 9600 });
+
+// create a parser so that we can easily handle the incoming data by reading the line
+const parser = serialPort.pipe(new Readline({
+    delimiter: '\n'
+}))
+
+serialPort.on("open", () => {
+	console.log('serial port open');
+});
+
+parser.on('data', console.log);
 
 let server = require('http').createServer(async (req, res) => {
   console.log("Got request!", req.method, req.url);
@@ -42,7 +73,7 @@ let server = require('http').createServer(async (req, res) => {
     }
   }
 });
-server.listen(PORT);
+server.listen(IP_PORT);
 
 
 let webrtcTransmitter = null;
@@ -51,6 +82,8 @@ let webrtcReceivers = new Set();
 let wsServer = new WebSocketServer({
   httpServer: server
 });
+
+const io = require('socket.io')(wsServer); // socket to client for function calls
 
 wsServer.on('request', (request) => {
   var connection = request.accept(null, request.origin);
@@ -61,9 +94,33 @@ wsServer.on('request', (request) => {
       return;
     }
     msg = msg.utf8Data;
-    // console.log("got message!", msg);
+
+    console.log("got message!", msg);
     let data = JSON.parse(msg);
+    console.log("message type:", data.type);
+    if (data.type == "L") {
+	console.log("turn left");
+	serialPort.write('L');
+	}
+    if (data.type == "R") {
+	console.log("turn right");
+	serialPort.write('R\n');
+	}
+    if (data.type == "F") {
+	console.log("forward");
+	serialPort.write('F');
+	}
+    if (data.type == "B") {
+	console.log("backwards");
+	serialPort.write('B');
+	}
+    if (data.type == "S") {
+	console.log("STOP");
+	serialPort.write('S');
+	}
+
     if (data.type == "webrtc") {
+      console.log("message received: " + data.message);
       if ('receiver' in data.message) {
         connection.isTransmitter = data.message.receiver !== false;
         if (connection.isTransmitter) {
@@ -93,4 +150,4 @@ wsServer.on('request', (request) => {
   });
 });
 
-console.log("Listening on port", PORT);
+console.log("Listening on port", IP_PORT);

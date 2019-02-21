@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <script src="js/webrtc.js"></script>
+  <script src="js/operatorWebRTC.js"></script>
 </head>
 
 <style>
@@ -20,34 +20,22 @@ table ,td, tr {
 			<tr>
 
 				<td>
-					<form action="/1" method="POST">
-						<input type="image" name="direction" src="/static/img/left.svg" value="left" style="float:left; width:80% ;">
-						</br>
-					</form>
+					<button onclick="left()">LEFT</button>
 				</td>
 
 				<td>
-					<form action="/2" method="POST">
-						<input type="image" name="direction" src="/static/img/forward.svg" value="forward" style="float:left; width:80%;">
-						</br>
-					</form>
+					<button onclick="forward()">FORWARD</button>
 				</td>
 
 				<td>
-					<form action="/3" method="POST">
-						<input type="image" name="direction" src="/static/img/right.svg" value="right" style="float:left; width:80%;">
-						</br>
-					</form>
+					<button onclick="right()">RIGHT</button>
 				</td>
 
 			</tr>
 			<tr>
 
 				<td>
-					<form action="/5" method="POST">
-						<input type="image" name="direction" src="/static/img/stop.svg" value="stop" style="margin-left:80px; width:80%;">
-						</br>
-					</form>
+					<button onclick="stop()">STOP</button>
 				</td>
 
 			</tr>
@@ -55,10 +43,7 @@ table ,td, tr {
 			<tr>
 
 				 <td>
-          <form action="/4" method="POST">
-            <input type="image" name="direction" src="/static/img/reverse.svg" value="reverse" style=" margin-left:80px; width:80%;">
-            </br>
-          </form>
+					<button onclick="backwards()">BACKWARDS</button>
         </td>
 			</tr>
 		</table>
@@ -73,5 +58,41 @@ table ,td, tr {
     receiverController.start(document.getElementById('the-video'));
   </script>
 
+	<script src="/socket.io/socket.io.js"></script>
+
+  <script type="text/javascript">
+				
+			var socket = io();
+
+				// send out left message to Arduino
+				function left() {
+						console.log("left");
+						dataController.send('L');
+				}
+
+				// send out forward message to Arduino
+				function forward() {
+						console.log("forward");
+						dataController.send('F');
+				}
+
+				// send out right message to Arduino
+				function right() {
+						console.log("right");
+						dataController.send('R');
+				}
+
+				// send out stop message to Arduino
+				function stop() {
+						console.log("stop");
+						dataController.send('S');
+				}
+
+				// send out reverse message to Arduino
+				function reverse() {
+						console.log("reverse");
+						dataController.send('R');
+				}
+  </script>
 
 </html>

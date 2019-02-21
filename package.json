@@ -17,7 +17,10 @@
   },
   "homepage": "https://github.com/michaelshiloh/webRTC#readme",
   "dependencies": {
+    "httpserver": "^0.3.0",
     "mime": "^2.4.0",
+    "serialport": "^7.1.4",
+    "socketio": "^1.0.0",
     "websocket": "^1.0.28"
   }
 }
