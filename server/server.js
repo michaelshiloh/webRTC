@@ -95,28 +95,53 @@ wsServer.on('request', (request) => {
     }
     msg = msg.utf8Data;
 
-    console.log("got message!", msg);
     let data = JSON.parse(msg);
-    console.log("message type:", data.type);
+    console.log(
+	"server.js in wsServer.on:",
+	"received message:", msg, 
+	"message type:", data.type);
+
     if (data.type == "L") {
-	console.log("turn left");
+	console.log(
+		"server.js in wsServer.on:",
+		"sending L to Arduino");
 	serialPort.write('L');
 	}
     if (data.type == "R") {
-	console.log("turn right");
-	serialPort.write('R\n');
+	console.log(
+		"server.js in wsServer.on:",
+		"sending R to Arduino");
+	serialPort.write('R');
 	}
     if (data.type == "F") {
-	console.log("forward");
+	console.log(
+		"server.js in wsServer.on:",
+		"sending F to Arduino");
 	serialPort.write('F');
 	}
     if (data.type == "B") {
-	console.log("backwards");
+	console.log(
+		"server.js in wsServer.on:",
+		"sending B to Arduino");
 	serialPort.write('B');
 	}
     if (data.type == "S") {
-	console.log("STOP");
+	console.log(
+		"server.js in wsServer.on:",
+		"sending S to Arduino");
 	serialPort.write('S');
+	}
+    if (data.type == "+") {
+	console.log(
+		"server.js in wsServer.on:",
+		"sending + to Arduino");
+	serialPort.write('+');
+	}
+    if (data.type == "-") {
+	console.log(
+		"server.js in wsServer.on:",
+		"sending - to Arduino");
+	serialPort.write('-');
 	}
 
     if (data.type == "webrtc") {

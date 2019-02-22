@@ -13,43 +13,47 @@ table ,td, tr {
 
 <body>
   <video id="the-video" width="640" height="480" muted autoPlay playsInline >
-	</video>
+  </video>
 
 
-		<table style="width:100%; max-width: 500px; height:300px;">
-			<tr>
-
-				<td>
-					<button onclick="left()">LEFT</button>
-				</td>
-
-				<td>
-					<button onclick="forward()">FORWARD</button>
-				</td>
-
-				<td>
-					<button onclick="right()">RIGHT</button>
-				</td>
-
-			</tr>
-			<tr>
-
-				<td>
-					<button onclick="stop()">STOP</button>
-				</td>
-
-			</tr>
-
-			<tr>
-
-				 <td>
-					<button onclick="backwards()">BACKWARDS</button>
+    <table style="width:100%; max-width: 500px; height:300px;">
+      <tr>
+        <td>
+          <button onclick="left()">LEFT</button>
         </td>
-			</tr>
-		</table>
+        <td>
+          <button onclick="forward()">FORWARD</button>
+        </td>
+        <td>
+          <button onclick="right()">RIGHT</button>
+        </td>
+      </tr>
+
+      <tr>
+        <td>
+          <button onclick="stop()">STOP</button>
+        </td>
+      </tr>
+
+      <tr>
+         <td>
+          <button onclick="backwards()">BACKWARDS</button>
+        </td>
+      </tr>
+
+      <tr>
+         <td>
+          <button onclick="slower()">SLOWER</button>
+        </td>
+         <td>
+          <button onclick="faster()">FASTER</button>
+        </td>
+      </tr>
+
+    </table>
 
 
-	</body>
+  </body>
 
   <script type="text/javascript">
     let dataController = new DataController();
@@ -58,41 +62,53 @@ table ,td, tr {
     receiverController.start(document.getElementById('the-video'));
   </script>
 
-	<script src="/socket.io/socket.io.js"></script>
+  <script src="/socket.io/socket.io.js"></script>
 
   <script type="text/javascript">
-				
-			var socket = io();
+        
+      var socket = io();
 
-				// send out left message to Arduino
-				function left() {
-						console.log("left");
-						dataController.send('L');
-				}
+        // send out left message to Arduino
+        function left() {
+            console.log("left");
+            dataController.send('L');
+        }
 
-				// send out forward message to Arduino
-				function forward() {
-						console.log("forward");
-						dataController.send('F');
-				}
+        // send out forward message to Arduino
+        function forward() {
+            console.log("forward");
+            dataController.send('F');
+        }
 
-				// send out right message to Arduino
-				function right() {
-						console.log("right");
-						dataController.send('R');
-				}
+        // send out right message to Arduino
+        function right() {
+            console.log("right");
+            dataController.send('R');
+        }
 
-				// send out stop message to Arduino
-				function stop() {
-						console.log("stop");
-						dataController.send('S');
-				}
+        // send out stop message to Arduino
+        function stop() {
+            console.log("stop");
+            dataController.send('S');
+        }
 
-				// send out reverse message to Arduino
-				function reverse() {
-						console.log("reverse");
-						dataController.send('R');
-				}
+        // send out reverse message to Arduino
+        function backwards() {
+            console.log("backwards");
+            dataController.send('B');
+        }
+
+        // send out faster message to Arduino
+        function faster() {
+            console.log("faster");
+            dataController.send('+');
+        }
+
+        // send out slower message to Arduino
+        function slower() {
+            console.log("slower");
+            dataController.send('-');
+        }
   </script>
 
 </html>
