@@ -28,6 +28,8 @@ and presents video from the robot.
 This web page also presents buttons for navigating the robot. 
 When the operator clicks on a button, this is sent to  TBA
 
+**Arduino code**
+Arduino code is [here](https://github.com/michaelshiloh/telepresence/tree/master/src/arduinoSketches/simpleMotorControlWebPage) although these projects should be cleaned up and merged.
 
 **How to use**
 
