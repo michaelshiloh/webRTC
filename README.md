@@ -10,9 +10,24 @@ Instead, one of the clients does.
 
 Two clients are used: One on the robot, one on the remote device. 
 
-The job of the client on the robot is to serve the video and audio, and to interface via the server to the Arduino
+The server waits for connections to either its root URL or to the "robot" URL.
 
-The job of the client on the remote device is to complete the audio/video chat, and to provide navigation
+**Web client on the robot**
+If a web client connects to the "robot" URL the web page 
+html/client/robot.html is served, 
+which includes the client/js/webrtc.js scripts,
+and then presents the video from the remote device via WebRTC.
+Video from the robot's camera is sent to the remote device.
+
+
+**Web client on the remote device**
+If a web client connects to the root URL the web page 
+html/client/html/operator.html is served, 
+which again includes the client/js/webrtc.js scripts,
+and presents video from the robot.
+This web page also presents buttons for navigating the robot. 
+When the operator clicks on a button, this is sent to  TBA
+
 
 **How to use**
 
