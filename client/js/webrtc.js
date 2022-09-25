@@ -72,7 +72,7 @@ const peerConnectionConfig = {
 };
 
 // const constraints = { audio: { channelCount: 0 } , video: true };
-const constraints = { video: true, audio: false }
+const constraints = { video: true, audio: true } // both have to be set to true for the browser to access video and audio
 // const constraints = window.constraints = { audio: true , video: true };
 /*
 const 
