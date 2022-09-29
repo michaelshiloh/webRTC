@@ -4,11 +4,12 @@
 </head>
 
 <body>
-  <video id="the-video" width="640" height="480" autoPlay playsInline />
+  <!-- keep this audio muted to disable echoing issues -->
+  <video id="the-video" width="640" height="480" muted autoPlay playsInline />
   <script type="text/javascript">
     let dataController = new DataController();
     let transmitterController = new WebrtcTransmitterController(dataController);
-    
+
     transmitterController.start(document.getElementById('the-video'));
   </script>
 </body>
