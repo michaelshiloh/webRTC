@@ -8,13 +8,33 @@ const PORT=8080;
 
 let server = require('http').createServer(async (req, res) => {
   console.log("Got request!", req.method, req.url);
-  
-  let path = url.parse(req.url, true).pathname
-  
-  switch (path) {
 
-  // Serve react-built files. 
-  // - In real production these would be served by nginx or similar. 
+  let path = url.parse(req.url, true).pathname
+
+  switch (path) {
+    case '/1':
+      // goes front etc.
+      console.log("Go left");
+      break;
+    case '/2':
+      // goes front etc.
+      console.log("Go forward");
+      break;
+    case '/3':
+      // goes front etc.
+      console.log("Go right");
+      break;
+    case '/4':
+      // goes front etc.
+      console.log("Go back");
+      break;
+    case '/5':
+      // goes front etc.
+      console.log("Stop");
+      break;
+
+  // Serve react-built files.
+  // - In real production these would be served by nginx or similar.
   // - In dev, they're served by react-stripts.
   // This is for pseudo-production: avoids react-scripts but isn't super efficient.
   default:
@@ -25,6 +45,7 @@ let server = require('http').createServer(async (req, res) => {
     if (safePath === '/robot') {
       safePath = '/html/robot.html';
     }
+    // what is all of this in the try block?
     try {
       let fullPath = 'client' + safePath;
       if ((await util.promisify(fs.stat)(fullPath)).isFile()) {
@@ -55,7 +76,7 @@ let wsServer = new WebSocketServer({
 wsServer.on('request', (request) => {
   var connection = request.accept(null, request.origin);
   // allConnections.add(connection);
-    
+
   connection.on('message', (msg) => {
     if (msg.type !== 'utf8') {
       return;
@@ -70,7 +91,7 @@ wsServer.on('request', (request) => {
           webrtcTransmitter = connection;
         } else {
           connection.clientUuid = data.message.receiver;
-          webrtcReceivers.add(connection);          
+          webrtcReceivers.add(connection);
         }
       } else {
         if (connection.isTransmitter) {
@@ -86,7 +107,7 @@ wsServer.on('request', (request) => {
       }
     }
   });
-  
+
   connection.on('close', (conn) => {
     webrtcTransmitter = null;
     webrtcReceivers.delete(conn);
