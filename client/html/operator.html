@@ -12,7 +12,7 @@ table ,td, tr {
 
 
 <body>
-  <video id="the-video" width="640" height="480" muted autoPlay playsInline >
+  <video id="the-video" width="640" height="480" autoPlay playsInline >
 	</video>
 
 
@@ -69,7 +69,7 @@ table ,td, tr {
   <script type="text/javascript">
     let dataController = new DataController();
     let receiverController = new WebrtcReceiverController(dataController);
-    
+
     receiverController.start(document.getElementById('the-video'));
   </script>
 
