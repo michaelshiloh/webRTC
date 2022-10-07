@@ -7,31 +7,31 @@ const WebSocketServer = require('websocket').server;
 const PORT=8080;
 
 let server = require('http').createServer(async (req, res) => {
-console.log("Got request!", req.method, req.url);
+  console.log("Got request!", req.method, req.url);
 
-let path = url.parse(req.url, true).pathname
+  let path = url.parse(req.url, true).pathname
 
-switch (path) {
-  case '/1':
-    // goes front etc.
-    console.log("Go left");
-    break;
-  case '/2':
-    // goes front etc.
-    console.log("Go forward");
-    break;
-  case '/3':
-    // goes front etc.
-    console.log("Go right");
-    break;
-  case '/4':
-    // goes front etc.
-    console.log("Go back");
-    break;
-  case '/5':
-    // goes front etc.
-    console.log("Stop");
-    break;
+  switch (path) {
+    case '/1':
+      // goes front etc.
+      console.log("Go left");
+      break;
+    case '/2':
+      // goes front etc.
+      console.log("Go forward");
+      break;
+    case '/3':
+      // goes front etc.
+      console.log("Go right");
+      break;
+    case '/4':
+      // goes front etc.
+      console.log("Go back");
+      break;
+    case '/5':
+      // goes front etc.
+      console.log("Stop");
+      break;
 
   // Serve react-built files.
   // - In real production these would be served by nginx or similar.
@@ -45,6 +45,7 @@ switch (path) {
     if (safePath === '/robot') {
       safePath = '/html/robot.html';
     }
+    // what is all of this in the try block?
     try {
       let fullPath = 'client' + safePath;
       if ((await util.promisify(fs.stat)(fullPath)).isFile()) {
@@ -75,8 +76,6 @@ let wsServer = new WebSocketServer({
 wsServer.on('request', (request) => {
   var connection = request.accept(null, request.origin);
   // allConnections.add(connection);
-  
-  console.log("connection: ", connection);
 
   connection.on('message', (msg) => {
     if (msg.type !== 'utf8') {

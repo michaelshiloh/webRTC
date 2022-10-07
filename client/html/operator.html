@@ -12,40 +12,48 @@ table ,td, tr {
 
 
 <body>
-  <!-- this is remote/robot video -->
   <video id="the-video" width="640" height="480" autoPlay playsInline >
-  <video id="cllient-video" width="640" height="480" muted autoPlay playsInline >
 	</video>
+
+
 		<table style="width:100%; max-width: 500px; height:300px;">
 			<tr>
+
 				<td>
 					<form action="/1" method="POST">
 						<input type="image" name="direction" src="/static/img/left.svg" value="left" style="float:left; width:80% ;">
 						</br>
 					</form>
 				</td>
+
 				<td>
 					<form action="/2" method="POST">
 						<input type="image" name="direction" src="/static/img/forward.svg" value="forward" style="float:left; width:80%;">
 						</br>
 					</form>
 				</td>
+
 				<td>
 					<form action="/3" method="POST">
 						<input type="image" name="direction" src="/static/img/right.svg" value="right" style="float:left; width:80%;">
 						</br>
 					</form>
 				</td>
+
 			</tr>
 			<tr>
+
 				<td>
 					<form action="/5" method="POST">
 						<input type="image" name="direction" src="/static/img/stop.svg" value="stop" style="margin-left:80px; width:80%;">
 						</br>
 					</form>
 				</td>
+
 			</tr>
+
 			<tr>
+
 				 <td>
           <form action="/4" method="POST">
             <input type="image" name="direction" src="/static/img/reverse.svg" value="reverse" style=" margin-left:80px; width:80%;">
@@ -54,17 +62,15 @@ table ,td, tr {
         </td>
 			</tr>
 		</table>
+
+
 	</body>
 
   <script type="text/javascript">
-    // for robot's video
     let dataController = new DataController();
     let receiverController = new WebrtcReceiverController(dataController);
-    receiverController.start(document.getElementById('the-video'));
 
-    // for self-video
-    let transmitterController = new WebrtcTransmitterController(dataController);
-    transmitterController.start(document.getElementById('the-video'));
+    receiverController.start(document.getElementById('the-video'));
   </script>
 
 

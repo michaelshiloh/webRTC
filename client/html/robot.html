@@ -5,16 +5,12 @@
 
 <body>
   <!-- keep this audio muted to disable echoing issues -->
-  <!-- this plays local video, i.e. from robot camera, but client should play also -->
   <video id="the-video" width="640" height="480" muted autoPlay playsInline />
-  <video id="remote-video" width="640" height="480" autoPlay playsInline />
   <script type="text/javascript">
     let dataController = new DataController();
     let transmitterController = new WebrtcTransmitterController(dataController);
+
     transmitterController.start(document.getElementById('the-video'));
-    // client connection
-    let receiverController = new WebrtcReceiverController(dataController);
-    receiverController.start(document.getElementById('remote-video'));
   </script>
 </body>
 </html>
