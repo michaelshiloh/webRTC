@@ -18,6 +18,7 @@
   "homepage": "https://github.com/michaelshiloh/webRTC#readme",
   "dependencies": {
     "mime": "^2.4.0",
+    "serialport": "^10.4.0",
     "websocket": "^1.0.28"
   }
 }

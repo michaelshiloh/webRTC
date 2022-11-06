@@ -2,7 +2,7 @@ class Listenable {
   constructor() {
     this.listeners = {};
   }
-  
+
   listen(type, listener) {
     if (! this.listeners[type]) {
       this.listeners[type] = new Set();
@@ -10,7 +10,7 @@ class Listenable {
     this.listeners[type].add(listener);
     return () => this.listeners[type].delete(listener);
   }
-  
+
   notify(type, ...args) {
     for (let listener of (this.listeners[type] || [])) {
       listener(...args);
@@ -21,14 +21,14 @@ class Listenable {
 class DataController extends Listenable {
   constructor() {
     super();
-    
+
     this.connect();
     this.messageQueue = [];
   }
-  
+
   connect() {
     this.disconnect();
-    
+
     this.ws = new WebSocket(`ws://${window.location.host}/comm`);
     this.ws.addEventListener('open', (event) => {
       this.connected = true;
@@ -45,14 +45,14 @@ class DataController extends Listenable {
       setTimeout(() => this.connect(), 500);
     });
   }
-  
+
   disconnect() {
     if (this.ws) {
       this.ws.close();
       delete this.ws;
     }
   }
-  
+
   send(type, message) {
     let msg = JSON.stringify({type, message});
     if (this.connected) {
@@ -75,8 +75,8 @@ const peerConnectionConfig = {
 const constraints = { video: true, audio: true } // both have to be set to true for the browser to access video and audio
 // const constraints = window.constraints = { audio: true , video: true };
 /*
-const 
-constraints 
+const
+constraints
 = {
 	audio: {
 		echoCancellation: {exact: hasEchoCancellation)
@@ -88,32 +88,33 @@ constraints
 */
 
 
-class WebrtcTransmitterController extends Listenable {  
+class WebrtcTransmitterController extends Listenable {
   constructor(data) {
     super();
-    
+
     this.data = data;
     data.listen('connection', () => data.send("webrtc", {receiver: false}));
-    
+
     if (data.connected) {
       data.send('webrtc', {receiver: false});
     }
-    
+
     this.connections = {};
   }
-  
+
   async start(video) {
     this.unlisten = this.data.listen('webrtc', (data) => this.handleMessage(data));
-    
+
     try {
       this.stream = await window.navigator.mediaDevices.getUserMedia(constraints);
+      // remoteStream = new MediaStream();
     } catch (e) {
       alert("Failed to get local video stream, check console for details.");
       console.error("getUserMedia failed", e);
       return;
     }
     console.log("Setting stream", this.stream);
-    video.srcObject = this.stream;
+    video.srcObject = this.stream; // this sets the video as your own on robot
   }
 
   async createConnectionFor(clientId) {
@@ -121,7 +122,7 @@ class WebrtcTransmitterController extends Listenable {
     pc.onicecandidate = (event) => event.candidate && this.data.send('webrtc', {ice: event.candidate, to: clientId});
 
     pc.ontrack = () => console.error("Transmitter got remote stream?");
-    pc.addStream(this.stream);
+    pc.addStream(this.stream); // this sends own video to receiver
 
     try {
       let description = await pc.createOffer();
@@ -132,7 +133,7 @@ class WebrtcTransmitterController extends Listenable {
       console.error("createOffer or setLocalDescription failed", e);
     }
   }
-  
+
   async handleMessage(data) {
     let msg = data.message;
     if (msg.sdp) {
@@ -163,26 +164,26 @@ class WebrtcTransmitterController extends Listenable {
 class WebrtcReceiverController extends Listenable {
   constructor(data) {
     super();
-    
+
     this.clientId = createUUID();
     this.data = data;
     data.listen('connection', () => data.send("webrtc", {receiver: this.clientId}));
-    
+
     if (data.connected) {
       data.send('webrtc', {receiver: this.clientId});
     }
   }
-  
+
   async start(video) {
     this.unlisten = this.data.listen('webrtc', (data) => this.handleMessage(data));
-    
+
     let pc = this.peerConnection = new RTCPeerConnection(peerConnectionConfig);
     pc.onicecandidate = (event) => event.candidate && this.data.send('webrtc', {ice: event.candidate});
     pc.ontrack = (event) => video.srcObject = event.streams[0];
-      
+    // this plays video from robot
     this.data.send('webrtc', {offers: 'please'});
   }
-  
+
   async handleMessage(data) {
     let msg = data.message;
     if (msg.sdp) {

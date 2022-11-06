@@ -6,6 +6,45 @@ const WebSocketServer = require('websocket').server;
 
 const PORT=8080;
 
+const { SerialPort } = require('serialport');
+
+// Create an Arduino port
+const port = new SerialPort({
+  path: '/dev/cu.usbmodem14201', // change this depending on Raspberry Pi port: /dev/ttyACM0
+  baudRate: 9600, // change this depending on Raspberry Pi baudRate
+});
+
+function sendToArduino(message) {
+  port.write(message, function(err) {
+    if (err) {
+      return console.log('Error on write: ', err.message);
+    }
+    console.log('message written: ', message);
+  });
+}
+
+port.write('main screen turn on', function(err) {
+  if (err) {
+    return console.log('Error on write: ', err.message);
+  }
+  console.log('message written');
+});
+
+// Open errors will be emitted as an error event
+port.on('error', function(err) {
+  console.log('Error: ', err.message)
+})
+
+// Read data that is available but keep the stream in "paused mode"
+port.on('readable', function () {
+  console.log('Data:', port.read())
+})
+
+// Switches the port into "flowing mode"
+port.on('data', function (data) {
+  console.log('Data:', data)
+})
+
 let server = require('http').createServer(async (req, res) => {
   console.log("Got request!", req.method, req.url);
 
@@ -15,22 +54,27 @@ let server = require('http').createServer(async (req, res) => {
     case '/1':
       // goes front etc.
       console.log("Go left");
+      sendToArduino("1");
       break;
     case '/2':
       // goes front etc.
       console.log("Go forward");
+      sendToArduino("2");
       break;
     case '/3':
       // goes front etc.
       console.log("Go right");
+      sendToArduino("3");
       break;
     case '/4':
       // goes front etc.
       console.log("Go back");
+      sendToArduino("4");
       break;
     case '/5':
       // goes front etc.
       console.log("Stop");
+      sendToArduino("5");
       break;
 
   // Serve react-built files.
