@@ -10,7 +10,7 @@ const { SerialPort } = require('serialport');
 
 // Create an Arduino port
 const port = new SerialPort({
-  path: '/dev/cu.usbmodem14201', // change this depending on Raspberry Pi port: /dev/ttyACM0
+  path: '/dev/ttyACM0', // change this depending on Raspberry Pi port: /dev/ttyACM0
   baudRate: 9600, // change this depending on Raspberry Pi baudRate
 });
 
